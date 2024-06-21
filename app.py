@@ -94,3 +94,19 @@ if xlsx:
     ax3.set_ylabel('Importe de Ventas')
     ax3.grid(True)
     st.pyplot(fig3)
+
+    # Calcular ventas acumuladas por día de la semana
+    ventas_acumuladas_dia = ut.calcular_ventas_acumuladas(df)
+
+    st.subheader("Ventas Acumuladas por Día de la Semana")
+    st.write(ventas_acumuladas_dia)
+
+    st.subheader("Gráfica de Ventas Acumuladas por Día de la Semana")
+    fig4, ax4 = plt.subplots(figsize=(7, 4))
+    ax4.plot(ventas_acumuladas_dia['Day_of_Week'], ventas_acumuladas_dia['Importe'], marker='o')
+    ax4.set_title('Ventas Acumuladas por Día de la Semana')
+    ax4.set_xlabel('Día de la Semana')
+    ax4.set_ylabel('Importe Acumulado de Ventas')
+    ax4.grid(True)
+    plt.tight_layout()
+    st.pyplot(fig4)

@@ -66,3 +66,24 @@ def acumulado_por_horas(df):
     result_df = result_df.set_index(["Fecha", "HoraRango"]).reindex(all_combinations, fill_value=0).reset_index()
     
     return result_df
+
+
+def calcular_ventas_acumuladas(df):
+    # Convertir la columna 'Fecha' a formato datetime
+    df['Fecha'] = pd.to_datetime(df['Fecha'])
+    
+    # Extraer el día de la semana y agregarlo como una nueva columna
+    df['Day_of_Week'] = df['Fecha'].dt.day_name()
+    
+    # Definir el orden de los días de la semana
+    days_order = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    
+    # Agrupar por día de la semana y sumar la columna 'Importe' para encontrar el día con mayores ventas
+    sales_summary = df.groupby('Day_of_Week')['Importe'].sum().reset_index()
+    
+    # Ordenar por el orden definido de los días de la semana
+    sales_summary['Day_of_Week'] = pd.Categorical(sales_summary['Day_of_Week'], categories=days_order, ordered=True)
+    sales_summary = sales_summary.sort_values('Day_of_Week')
+    
+    return sales_summary
+
